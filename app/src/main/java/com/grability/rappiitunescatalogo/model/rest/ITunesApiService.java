@@ -1,6 +1,6 @@
 package com.grability.rappiitunescatalogo.model.rest;
 
-import com.grability.rappiitunescatalogo.domain.entities.Feed;
+import com.grability.rappiitunescatalogo.domain.entities.ApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,6 +13,6 @@ import retrofit2.http.Path;
 public interface ITunesApiService {
 
     @GET("topfreeapplications/limit={limit}/json")
-    Call<Feed> getFeed(@Path("limit") int limit);
+    Call<ApiResponse> getFeed(@Path("limit") int limit);
 
 }
