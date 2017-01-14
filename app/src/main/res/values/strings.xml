@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Rappi iTunes Catalogo</string>
+    <string name="splash.message.welcome">Bienvenido al catalogo de iTunes, por favor espere mientras concluye la carga inicial.</string>
 </resources>

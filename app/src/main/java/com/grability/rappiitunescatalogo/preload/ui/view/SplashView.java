@@ -5,4 +5,13 @@ package com.grability.rappiitunescatalogo.preload.ui.view;
  */
 
 public interface SplashView {
+    void refreshCatalog();
+
+    void showProgressBar();
+
+    void hideProgressBar();
+
+    void onCatalogUpdated();
+
+    void onFirstUse();
 }

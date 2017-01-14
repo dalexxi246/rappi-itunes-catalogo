@@ -1,3 +1,5 @@
+package com.grability.rappiitunescatalogo;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -8,7 +10,7 @@ import com.raizlabs.android.dbflow.config.FlowManager;
  * Created by wilmer on 11/01/17.
  */
 
-public class App extends Application {
+public class RappiItunesApp extends Application {
 
     private SharedPreferences prefs;
 
@@ -30,7 +32,7 @@ public class App extends Application {
     }
 
     private void initDB() {
-        FlowManager.init(this);
+        FlowManager.init(getApplicationContext());
     }
 
     private void DBTearDown() {
