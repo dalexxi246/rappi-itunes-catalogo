@@ -3,9 +3,10 @@ package com.grability.rappiitunescatalogo.domain.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Feed {
+public class Feed implements Serializable {
 
     @SerializedName("author")
     private Author author;
@@ -95,17 +96,4 @@ public class Feed {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
-        return "Feed{" +
-                ", author=" + author +
-                ", entry=" + entry +
-                ", updated=" + updated +
-                ", rights=" + rights +
-                ", title=" + title +
-                ", icon=" + icon +
-                ", link=" + link +
-                ", id=" + id +
-                '}';
-    }
 }

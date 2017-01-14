@@ -1,7 +1,13 @@
 package com.grability.rappiitunescatalogo.model.rest;
 
+import com.google.gson.Gson;
+import com.grability.rappiitunescatalogo.domain.entities.Example;
 import com.grability.rappiitunescatalogo.domain.entities.Feed;
 
+import java.io.IOException;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,9 +28,32 @@ public class TestAPI {
     }
 
     public static void main(String... args) {
-        System.out.println("aaaaaaaaaaaaaaaa");
-        TestAPI testAPI = new TestAPI();
-        testAPI.getList(20);
+        OkHttpClient cl = new OkHttpClient();
+        Request rq = new Request.Builder()
+                .url("https://itunes.apple.com/us/rss/topfreeapplications/limit=20/json")
+                .build();
+
+        cl.newCall(rq).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    Gson gson = new Gson();
+                    String str_response = response.body().string();
+                    Example feed = gson.fromJson(str_response, Example.class);
+                    System.out.println(feed.toString());
+                } else {
+                    System.out.println("Fallo");
+                }
+            }
+        });
+
+//        TestAPI testAPI = new TestAPI();
+//        testAPI.getList(20);
     }
 
     private void getList(int limit) {
