@@ -8,7 +8,7 @@ public class CategoryAttributes {
 
     @SerializedName("im:id")
     @Expose
-    private String imId;
+    private int imId;
     @SerializedName("term")
     @Expose
     private String term;
@@ -19,11 +19,11 @@ public class CategoryAttributes {
     @Expose
     private String label;
 
-    public String getImId() {
+    public int getImId() {
         return imId;
     }
 
-    public void setImId(String imId) {
+    public void setImId(int imId) {
         this.imId = imId;
     }
 

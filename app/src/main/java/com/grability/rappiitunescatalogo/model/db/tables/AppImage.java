@@ -14,7 +14,7 @@ import com.raizlabs.android.dbflow.structure.BaseModel;
 public class AppImage extends BaseModel {
 
     @Column
-    @PrimaryKey
+    @PrimaryKey(autoincrement = true)
     private int id;
 
     @Column

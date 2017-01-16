@@ -4,6 +4,7 @@ import com.grability.rappiitunescatalogo.model.db.AppsCatalogDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
+import com.raizlabs.android.dbflow.annotation.Unique;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
 /**
@@ -17,6 +18,7 @@ public class Artist extends BaseModel {
     private int id;
 
     @Column
+    @Unique
     private String name;
 
     @Column

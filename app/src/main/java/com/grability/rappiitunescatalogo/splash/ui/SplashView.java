@@ -1,10 +1,11 @@
-package com.grability.rappiitunescatalogo.preload.ui.view;
+package com.grability.rappiitunescatalogo.splash.ui;
 
 /**
  * Created by wilmer on 12/01/17.
  */
 
 public interface SplashView {
+
     void refreshCatalog();
 
     void showProgressBar();
@@ -13,5 +14,5 @@ public interface SplashView {
 
     void onCatalogUpdated();
 
-    void onFirstUse();
+    void onError(String errorMsg);
 }

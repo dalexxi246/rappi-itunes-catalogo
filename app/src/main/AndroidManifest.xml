@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".preload.ui.Splash"
+            android:name=".splash.ui.SplashActivity"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -26,6 +26,7 @@
         <activity
             android:name=".appslist.view.ui.AppListActivity"
             android:theme="@style/AppTheme" />
+        <activity android:name=".appdetails.view.ui.AppDetailsActivity"></activity>
     </application>
 
 </manifest>

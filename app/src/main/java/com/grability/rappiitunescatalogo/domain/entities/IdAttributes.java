@@ -10,16 +10,16 @@ public class IdAttributes {
 
     @SerializedName("im:id")
     @Expose
-    private String imId;
+    private int imId;
     @SerializedName("im:bundleId")
     @Expose
     private String imBundleId;
 
-    public String getImId() {
+    public int getImId() {
         return imId;
     }
 
-    public void setImId(String imId) {
+    public void setImId(int imId) {
         this.imId = imId;
     }
 

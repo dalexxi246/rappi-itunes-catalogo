@@ -8,14 +8,13 @@ public class ImImageAttributes {
 
     @SerializedName("height")
     @Expose
-    private String height;
+    private int height;
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
-
 }
