@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.grability.rappiitunescatalogo.appslist.view.ui.AppListFragment">
+    tools:context="com.grability.rappiitunescatalogo.appslist.view.ui.AppListFragment"
+    tools:listitem="@layout/itemlist_app">
 
 </android.support.v7.widget.RecyclerView>

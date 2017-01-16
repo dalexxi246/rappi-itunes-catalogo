@@ -9,12 +9,14 @@ import com.grability.rappiitunescatalogo.libs.base.ImageLoader;
 
 import javax.inject.Singleton;
 
+import dagger.Module;
 import dagger.Provides;
 
 /**
  * Created by wilmer on 15/01/17.
  */
 
+@Module
 public class LibsModule {
 
     Activity activity;

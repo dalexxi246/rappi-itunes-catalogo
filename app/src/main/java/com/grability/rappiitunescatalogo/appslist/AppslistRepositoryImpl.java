@@ -101,7 +101,6 @@ public class AppslistRepositoryImpl implements AppslistRepository {
             }
         }
         post(AppslistEvent.UPDATE_EVENT);
-        getSavedApps();
     }
 
     private void post(int updateEvent) {

@@ -4,8 +4,9 @@
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="162dp"
     android:layout_height="wrap_content"
+    android:layout_margin="@dimen/cardview_elevation"
     app:cardCornerRadius="@dimen/cardview_default_radius"
-    card_view:cardElevation="4dp"
+    card_view:cardElevation="@dimen/cardview_elevation"
     card_view:cardUseCompatPadding="true">
 
     <RelativeLayout
