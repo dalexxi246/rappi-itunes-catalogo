@@ -6,6 +6,4 @@ package com.grability.rappiitunescatalogo.appslist;
 
 public interface AppslistInteractor {
     void getApps(int limit, int category_code);
-
-    void updateLocalDB(int limit);
 }

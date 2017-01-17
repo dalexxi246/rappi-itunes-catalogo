@@ -8,6 +8,4 @@ public interface AppslistRepository {
 
     void getSavedApps(int limit, int category_code);
 
-    void retrieveNewestApps(int limit);
-
 }

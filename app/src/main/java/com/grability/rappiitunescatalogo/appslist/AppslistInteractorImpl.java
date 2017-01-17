@@ -17,9 +17,4 @@ public class AppslistInteractorImpl implements AppslistInteractor {
         repository.getSavedApps(limit, category_code);
     }
 
-    @Override
-    public void updateLocalDB(int limit) {
-        repository.retrieveNewestApps(limit);
-    }
-
 }
