@@ -1,34 +1,43 @@
-package com.grability.rappiitunescatalogo.appdetails.view.ui;
+package com.grability.rappiitunescatalogo.appslist.view;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.grability.rappiitunescatalogo.R;
+import com.grability.rappiitunescatalogo.model.db.tables.App;
+import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
+import java.util.List;
 
-public class AppDetailsFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class AppsListFragment extends Fragment implements AppsListView {
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    @BindView(R.id.list_apps)
+    RecyclerView listApps;
+
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public AppDetailsFragment() {
-        // Required empty public constructor
+    public AppsListFragment() {
+
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static AppDetailsFragment newInstance(String param1, String param2) {
-        AppDetailsFragment fragment = new AppDetailsFragment();
+    public static AppsListFragment newInstance(String param1, String param2) {
+        AppsListFragment fragment = new AppsListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,10 +58,11 @@ public class AppDetailsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_app_detail, container, false);
+        View view = inflater.inflate(R.layout.fragment_app_list, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -63,6 +73,39 @@ public class AppDetailsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private void setupRecyclerView(int screenSize) {
+        if (screenSize == 1) {
+            listApps.setLayoutManager(new LinearLayoutManager(getActivity()));
+        } else {
+            listApps.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        }
+    }
+
+    @Override
+    public void showProgressBar() {
+
+    }
+
+    @Override
+    public void hideProgressBar() {
+
+    }
+
+    @Override
+    public void searchCatalog(Category c, App a) {
+
+    }
+
+    @Override
+    public void setAppList(List<App> appList) {
+
+    }
+
+    @Override
+    public void onError(String errorMsg) {
+
     }
 
     public interface OnFragmentInteractionListener {

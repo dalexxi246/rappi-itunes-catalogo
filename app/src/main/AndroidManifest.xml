@@ -24,9 +24,11 @@
             android:name=".about.view.ui.AboutActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".appslist.view.ui.AppListActivity"
+            android:name=".appslist.view.AppsListActivity"
             android:theme="@style/AppTheme" />
-        <activity android:name=".appdetails.view.ui.AppDetailsActivity"></activity>
+        <activity
+            android:name=".appdetails.view.AppDetailsActivity"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

@@ -8,8 +8,10 @@ import java.util.List;
  * Created by wilmer on 15/01/17.
  */
 public class AppslistEvent {
+
     public static final int UPDATE_EVENT = 373;
     public static final int READ_EVENT = 192;
+
     int type;
     List<App> apps;
     String errorMsg;

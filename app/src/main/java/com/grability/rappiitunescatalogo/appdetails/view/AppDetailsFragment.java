@@ -1,4 +1,4 @@
-package com.grability.rappiitunescatalogo.appslist.view.ui;
+package com.grability.rappiitunescatalogo.appdetails.view;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,27 +8,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.grability.rappiitunescatalogo.R;
-import com.grability.rappiitunescatalogo.model.db.tables.App;
-import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
-import java.util.List;
 
-public class AppListFragment extends Fragment implements AppsListView {
-
+public class AppDetailsFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    public AppListFragment() {
-
+    public AppDetailsFragment() {
+        // Required empty public constructor
     }
 
-    public static AppListFragment newInstance(String param1, String param2) {
-        AppListFragment fragment = new AppListFragment();
+    // TODO: Rename and change types and number of parameters
+    public static AppDetailsFragment newInstance(String param1, String param2) {
+        AppDetailsFragment fragment = new AppDetailsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,9 +49,10 @@ public class AppListFragment extends Fragment implements AppsListView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_app_list, container, false);
+        return inflater.inflate(R.layout.fragment_app_detail, container, false);
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -62,21 +63,6 @@ public class AppListFragment extends Fragment implements AppsListView {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    @Override
-    public void searchCatalog(Category c, App a) {
-
-    }
-
-    @Override
-    public void setAppList(List<App> appList) {
-
-    }
-
-    @Override
-    public void onError(String errorMsg) {
-
     }
 
     public interface OnFragmentInteractionListener {

@@ -1,5 +1,7 @@
 package com.grability.rappiitunescatalogo.appslist;
 
+import android.support.annotation.NonNull;
+
 import com.grability.rappiitunescatalogo.appslist.event.AppslistEvent;
 import com.grability.rappiitunescatalogo.domain.entities.ApiResponse;
 import com.grability.rappiitunescatalogo.domain.entities.Entry;
@@ -7,10 +9,15 @@ import com.grability.rappiitunescatalogo.domain.entities.ImImage;
 import com.grability.rappiitunescatalogo.libs.base.EventBus;
 import com.grability.rappiitunescatalogo.model.db.tables.App;
 import com.grability.rappiitunescatalogo.model.db.tables.AppImage;
+import com.grability.rappiitunescatalogo.model.db.tables.App_Table;
 import com.grability.rappiitunescatalogo.model.db.tables.Artist;
 import com.grability.rappiitunescatalogo.model.db.tables.Category;
+import com.grability.rappiitunescatalogo.model.db.tables.Category_Table;
 import com.grability.rappiitunescatalogo.model.rest.ITunesApiService;
+import com.raizlabs.android.dbflow.sql.language.CursorResult;
+import com.raizlabs.android.dbflow.sql.language.From;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.database.transaction.QueryTransaction;
 
 import java.util.List;
 
@@ -33,9 +40,20 @@ public class AppslistRepositoryImpl implements AppslistRepository {
     }
 
     @Override
-    public void getSavedApps() {
-        List<App> apps = SQLite.select().from(App.class).queryList();
-        post(apps);
+    public void getSavedApps(int limit, Category c) {
+        From from = SQLite.select().from(App.class);
+        if (c != null) {
+            from.innerJoin(Category_Table.class)
+                    .on(Category_Table.id.withTable().eq(App_Table.category_id.withTable()))
+                    .where(Category_Table.id.eq(c.getId()));
+        }
+        from.async().queryResultCallback(new QueryTransaction.QueryResultCallback<App>() {
+            @Override
+            public void onQueryResult(QueryTransaction transaction, @NonNull CursorResult tResult) {
+                List apps = tResult.toListClose();
+                post(apps);
+            }
+        }).execute();
     }
 
     @Override
