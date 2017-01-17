@@ -1,6 +1,5 @@
 package com.grability.rappiitunescatalogo.appslist.view;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,24 +10,35 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.grability.rappiitunescatalogo.R;
+import com.grability.rappiitunescatalogo.RappiItunesApp;
+import com.grability.rappiitunescatalogo.appslist.AppsListPresenter;
+import com.grability.rappiitunescatalogo.appslist.view.adapter.AppsListAdapter;
+import com.grability.rappiitunescatalogo.appslist.view.adapter.OnAppListItemClickListener;
 import com.grability.rappiitunescatalogo.model.db.tables.App;
-import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AppsListFragment extends Fragment implements AppsListView {
+public class AppsListFragment extends Fragment implements AppsListView, OnAppListItemClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
+    public static final int DEFAULT_LIMIT_APP_LIST = 20;
+    public static final int FILTER_NO_CATEGORY = 0;
+    public static final int SCREEN_SIZE_PHONE = 1;
+    public static final int SCREEN_SIZE_TABLET = 2;
+    private static final String ARG_SCREEN_SIZE = "screen_size";
+    private static final String ARG_LIMIT = "limit";
+    private static final String ARG_CATEGORY = "category";
     @BindView(R.id.list_apps)
     RecyclerView listApps;
 
-    private String mParam1;
-    private String mParam2;
+    @Inject
+    AppsListAdapter adapter;
+    @Inject
+    AppsListPresenter presenter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -36,11 +46,12 @@ public class AppsListFragment extends Fragment implements AppsListView {
 
     }
 
-    public static AppsListFragment newInstance(String param1, String param2) {
+    public static AppsListFragment newInstance(int pScreenSize, int pLimit, int pCategory) {
         AppsListFragment fragment = new AppsListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_SCREEN_SIZE, pScreenSize);
+        args.putInt(ARG_LIMIT, pLimit);
+        args.putInt(ARG_CATEGORY, pCategory);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,10 +59,23 @@ public class AppsListFragment extends Fragment implements AppsListView {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        int pScreenSize = SCREEN_SIZE_PHONE;
+        int pLimit = DEFAULT_LIMIT_APP_LIST;
+        int pCategory = FILTER_NO_CATEGORY;
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            pScreenSize = getArguments().getInt(ARG_SCREEN_SIZE);
+            pLimit = getArguments().getInt(ARG_LIMIT);
+            pCategory = getArguments().getInt(ARG_CATEGORY);
         }
+        setupInjection();
+        setupRecyclerView(pScreenSize);
+        presenter.onCreate();
+        presenter.getApps(pLimit, pCategory);
+    }
+
+    private void setupInjection() {
+        RappiItunesApp app = (RappiItunesApp) getActivity().getApplication();
+        app.getAppsListComponent(this, this).inject(this);
     }
 
     @Override
@@ -63,16 +87,20 @@ public class AppsListFragment extends Fragment implements AppsListView {
         return view;
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void setOnFragmentInteractionListener(OnFragmentInteractionListener mListener) {
+        this.mListener = mListener;
     }
 
     private void setupRecyclerView(int screenSize) {
@@ -94,22 +122,33 @@ public class AppsListFragment extends Fragment implements AppsListView {
     }
 
     @Override
-    public void searchCatalog(Category c, App a) {
+    public void searchCatalog(int category_code, String app_name) {
 
     }
 
     @Override
     public void setAppList(List<App> appList) {
-
+        adapter.setApps(appList);
     }
 
     @Override
     public void onError(String errorMsg) {
+        if (mListener != null) {
+            mListener.onFragmentError(errorMsg);
+        }
+    }
 
+    @Override
+    public void onItemClick(App app) {
+        if (mListener != null) {
+            mListener.onSelectedApp(app);
+        }
     }
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentError(String errorMsg);
+
+        void onSelectedApp(App app);
     }
 }

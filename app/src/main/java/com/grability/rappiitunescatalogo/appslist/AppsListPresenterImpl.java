@@ -3,8 +3,8 @@ package com.grability.rappiitunescatalogo.appslist;
 import com.grability.rappiitunescatalogo.appslist.event.AppslistEvent;
 import com.grability.rappiitunescatalogo.appslist.view.AppsListView;
 import com.grability.rappiitunescatalogo.libs.base.EventBus;
-import com.grability.rappiitunescatalogo.model.db.tables.App;
-import com.grability.rappiitunescatalogo.model.db.tables.Category;
+
+import org.greenrobot.eventbus.Subscribe;
 
 /**
  * Created by wilmer on 16/01/17.
@@ -33,14 +33,15 @@ public class AppsListPresenterImpl implements AppsListPresenter {
     }
 
     @Override
-    public void getApps(int limit, Category c, App a) {
+    public void getApps(int limit, int category_code) {
         if (view != null) {
             view.showProgressBar();
         }
-        interactor.getApps(limit, c, a);
+        interactor.getApps(limit, category_code);
     }
 
     @Override
+    @Subscribe
     public void onEventMainThreat(AppslistEvent evt) {
         if (view != null) {
             switch (evt.getType()) {

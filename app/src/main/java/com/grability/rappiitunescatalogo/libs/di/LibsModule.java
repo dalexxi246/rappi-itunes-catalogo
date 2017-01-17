@@ -21,17 +21,14 @@ public class LibsModule {
 
     Activity activity;
 
-    public LibsModule() {
-    }
-
-    public LibsModule(Activity activity) {
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
     @Provides
     @Singleton
-    EventBus provideEventBus(org.greenrobot.eventbus.EventBus eventBus) {
-        return new GreenRobotEventBus(eventBus);
+    EventBus provideEventBus() {
+        return new GreenRobotEventBus();
     }
 
     @Provides

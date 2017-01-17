@@ -1,6 +1,7 @@
 package com.grability.rappiitunescatalogo.splash.ui;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -10,8 +11,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.grability.rappiitunescatalogo.R;
-import com.grability.rappiitunescatalogo.appslist.view.ui.AppListActivity;
+import com.grability.rappiitunescatalogo.RappiItunesApp;
+import com.grability.rappiitunescatalogo.appslist.view.AppsListActivity;
 import com.grability.rappiitunescatalogo.splash.SplashPresenter;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,16 +25,31 @@ public class SplashActivity extends AppCompatActivity implements SplashView, Vie
     @BindView(R.id.progressBar)
     ContentLoadingProgressBar progressBar;
 
-    SplashPresenter presenter;
     @BindView(R.id.activity_splash)
-    RelativeLayout activitySplash;
+    RelativeLayout layout;
+
+    @Inject
+    SplashPresenter presenter;
+    @Inject
+    SharedPreferences preferences;
+
+    private RappiItunesApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ButterKnife.bind(this);
+
+        app = (RappiItunesApp) getApplication();
+        setupInjection();
+
         presenter.onCreate();
+        refreshCatalog();
+    }
+
+    private void setupInjection() {
+        app.getSplashComponent(this).inject(this);
     }
 
     @Override
@@ -64,7 +83,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView, Vie
     public void onError(String errorMsg) {
         Snackbar message;
         message = Snackbar
-                .make(activitySplash, errorMsg, Snackbar.LENGTH_INDEFINITE)
+                .make(layout, errorMsg, Snackbar.LENGTH_INDEFINITE)
                 .setAction(getResources().getString(R.string.splash_label_reload), this);
         if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             message.setActionTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
@@ -75,7 +94,7 @@ public class SplashActivity extends AppCompatActivity implements SplashView, Vie
     }
 
     private void gotoAppListActivity() {
-        startActivity(new Intent(this, AppListActivity.class));
+        startActivity(new Intent(this, AppsListActivity.class));
     }
 
     @Override

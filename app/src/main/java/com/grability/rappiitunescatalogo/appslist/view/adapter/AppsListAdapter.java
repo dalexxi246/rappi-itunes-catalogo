@@ -33,6 +33,11 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
         this.clickListener = clickListener;
     }
 
+    public void setApps(List<App> appList) {
+        this.list = appList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -43,7 +48,14 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
 
     @Override
     public void onBindViewHolder(Viewholder holder, int position) {
+        App currentApp = list.get(position);
 
+        holder.txtAppName.setText(currentApp.getTitle());
+        holder.txtAppCategory.setText(currentApp.getCategory().getLabel());
+        holder.txtAppResume.setText(currentApp.getSummary());
+        // TODO: obtener imagenes y cargar la de la resolucion adecuada
+
+        holder.setClickListener(currentApp, this.clickListener);
     }
 
     @Override

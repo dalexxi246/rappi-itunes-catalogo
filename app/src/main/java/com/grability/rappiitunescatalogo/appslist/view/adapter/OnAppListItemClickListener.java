@@ -8,6 +8,4 @@ import com.grability.rappiitunescatalogo.model.db.tables.App;
 
 public interface OnAppListItemClickListener {
     void onItemClick(App app);
-
-    void onShowMoreClick();
 }
