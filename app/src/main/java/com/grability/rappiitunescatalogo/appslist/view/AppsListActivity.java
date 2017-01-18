@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.grability.rappiitunescatalogo.R;
 import com.grability.rappiitunescatalogo.appdetails.view.AppDetailsActivity;
@@ -22,8 +21,6 @@ import butterknife.OnClick;
 
 public class AppsListActivity extends AppCompatActivity implements AppsListFragment.OnFragmentInteractionListener {
 
-    @BindView(R.id.txt_title_term)
-    TextView txtTitleTerm;
     @BindView(R.id.appbar)
     Toolbar appbar;
     @BindView(R.id.btn_search)

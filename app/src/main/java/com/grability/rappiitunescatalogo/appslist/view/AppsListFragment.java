@@ -109,7 +109,7 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
         if (screenSize == 1) {
             listApps.setLayoutManager(new LinearLayoutManager(getActivity()));
         } else {
-            listApps.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            listApps.setLayoutManager(new GridLayoutManager(getActivity(), 2, LinearLayoutManager.HORIZONTAL, false));
         }
         listApps.setAdapter(adapter);
         listApps.setHasFixedSize(true);

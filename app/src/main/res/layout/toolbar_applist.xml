@@ -12,14 +12,4 @@
     app:navigationIcon="@drawable/ic_menu"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-    <TextView
-        android:id="@+id/txt_title_term"
-        android:layout_width="240dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.19"
-        android:gravity="center"
-        android:text="@string/app_name"
-        android:textSize="18dp"
-        android:textStyle="bold" />
-
 </android.support.v7.widget.Toolbar>
