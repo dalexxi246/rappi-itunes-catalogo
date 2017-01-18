@@ -1,6 +1,6 @@
 package com.grability.rappiitunescatalogo.libs.di;
 
-import android.app.Activity;
+import android.content.Context;
 
 import com.grability.rappiitunescatalogo.libs.GlideImageLoader;
 import com.grability.rappiitunescatalogo.libs.GreenRobotEventBus;
@@ -19,12 +19,6 @@ import dagger.Provides;
 @Module
 public class LibsModule {
 
-    Activity activity;
-
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
-
     @Provides
     @Singleton
     EventBus provideEventBus() {
@@ -33,19 +27,12 @@ public class LibsModule {
 
     @Provides
     @Singleton
-    ImageLoader provideImageLoader(Activity activity) {
+    ImageLoader provideImageLoader(Context context) {
         GlideImageLoader imageLoader = new GlideImageLoader();
-        if (activity != null) {
-            imageLoader.setLoaderContext(activity);
+        if (context != null) {
+            imageLoader.setLoaderContext(context);
         }
         return imageLoader;
     }
-
-    @Provides
-    @Singleton
-    Activity provideActivity() {
-        return this.activity;
-    }
-
 
 }

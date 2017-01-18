@@ -1,6 +1,6 @@
 package com.grability.rappiitunescatalogo.libs;
 
-import android.app.Activity;
+import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -18,8 +18,8 @@ public class GlideImageLoader implements ImageLoader {
     private RequestManager glideRequestManager;
     private RequestListener onFinishLoadingListener;
 
-    public void setLoaderContext(Activity activity) {
-        this.glideRequestManager = Glide.with(activity);
+    public void setLoaderContext(Context context) {
+        this.glideRequestManager = Glide.with(context);
     }
 
     @Override

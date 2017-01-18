@@ -29,17 +29,19 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
     public static final int FILTER_NO_CATEGORY = 0;
     public static final int SCREEN_SIZE_PHONE = 1;
     public static final int SCREEN_SIZE_TABLET = 2;
+
     private static final String ARG_SCREEN_SIZE = "screen_size";
     private static final String ARG_LIMIT = "limit";
     private static final String ARG_CATEGORY = "category";
     @BindView(R.id.list_apps)
     RecyclerView listApps;
-
     @Inject
     AppsListAdapter adapter;
     @Inject
     AppsListPresenter presenter;
-
+    private int pScreenSize;
+    private int pLimit;
+    private int pCategory;
     private OnFragmentInteractionListener mListener;
 
     public AppsListFragment() {
@@ -59,16 +61,15 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int pScreenSize = SCREEN_SIZE_PHONE;
-        int pLimit = DEFAULT_LIMIT_APP_LIST;
-        int pCategory = FILTER_NO_CATEGORY;
+        pScreenSize = SCREEN_SIZE_PHONE;
+        pLimit = DEFAULT_LIMIT_APP_LIST;
+        pCategory = FILTER_NO_CATEGORY;
         if (getArguments() != null) {
             pScreenSize = getArguments().getInt(ARG_SCREEN_SIZE);
             pLimit = getArguments().getInt(ARG_LIMIT);
             pCategory = getArguments().getInt(ARG_CATEGORY);
         }
         setupInjection();
-        setupRecyclerView(pScreenSize);
         presenter.onCreate();
         presenter.getApps(pLimit, pCategory);
     }
@@ -84,6 +85,7 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_app_list, container, false);
         ButterKnife.bind(this, view);
+        setupRecyclerView(pScreenSize);
         return view;
     }
 
@@ -109,6 +111,8 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
         } else {
             listApps.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         }
+        listApps.setAdapter(adapter);
+        listApps.setHasFixedSize(true);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class AppsListPresenterImpl implements AppsListPresenter {
         if (view != null) {
             switch (evt.getType()) {
                 case AppslistEvent.READ_EVENT:
-                    if (evt.getErrorMsg() != null) {
+                    if (evt.getErrorMsg() == null) {
                         view.hideProgressBar();
                         view.setAppList(evt.getApps());
                     } else {

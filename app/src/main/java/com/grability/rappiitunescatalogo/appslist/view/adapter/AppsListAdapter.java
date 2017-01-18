@@ -42,17 +42,18 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.itemlist_app, parent, false);
-        Viewholder vh = new Viewholder(v);
-        return vh;
+        return new Viewholder(v);
     }
 
     @Override
     public void onBindViewHolder(Viewholder holder, int position) {
         App currentApp = list.get(position);
 
-        holder.txtAppName.setText(currentApp.getTitle());
+        holder.txtAppName.setText(currentApp.getName());
+        currentApp.getCategory().load();
         holder.txtAppCategory.setText(currentApp.getCategory().getLabel());
         holder.txtAppResume.setText(currentApp.getSummary());
+        holder.txtAppResume.setVisibility(View.GONE);
         // TODO: obtener imagenes y cargar la de la resolucion adecuada
 
         holder.setClickListener(currentApp, this.clickListener);
@@ -95,6 +96,7 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
             btnExpandResume.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    txtAppResume.setVisibility(View.VISIBLE);
                     //TODO: Animacion de expandir descripcion (txtAppResume)
                 }
             });

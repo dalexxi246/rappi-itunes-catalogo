@@ -26,12 +26,11 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     TextView txtTitleTerm;
     @BindView(R.id.appbar)
     Toolbar appbar;
-    @BindView(R.id.container_list)
-    FrameLayout containerList;
-    @BindView(R.id.container_details)
-    FrameLayout containerDetails;
     @BindView(R.id.btn_search)
     FloatingActionButton btnSearch;
+
+    FrameLayout containerList;
+    FrameLayout containerDetails;
 
     AppsListFragment appsListFragment;
     AppDetailsFragment appDetailsFragment;
@@ -45,6 +44,7 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_list);
         ButterKnife.bind(this);
+        setupContainers();
         setupAppBar();
 
         fragmentManager = getSupportFragmentManager();
@@ -58,6 +58,11 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         appsListFragment.setOnFragmentInteractionListener(this);
         fragmentManager.beginTransaction().replace(R.id.container_list, appsListFragment).commit();
 
+    }
+
+    private void setupContainers() {
+        containerList = (FrameLayout) findViewById(R.id.container_list);
+        containerDetails = (FrameLayout) findViewById(R.id.container_details);
     }
 
     private void setupAppBar() {
