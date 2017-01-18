@@ -48,12 +48,23 @@ public class App extends BaseModel {
     private String releaseTimestamp;
 
     @Column
+    private String main_image;
+
+    @Column
     @ForeignKey(stubbedRelationship = true)
     private Artist artist;
 
     @Column
     @ForeignKey(stubbedRelationship = true)
     private Category category;
+
+    public String getMain_image() {
+        return main_image;
+    }
+
+    public void setMain_image(String main_image) {
+        this.main_image = main_image;
+    }
 
     public int getId() {
         return id;
@@ -173,8 +184,9 @@ public class App extends BaseModel {
                 ", id_package='" + id_package + '\'' +
                 ", releaseDate='" + releaseDate + '\'' +
                 ", releaseTimestamp='" + releaseTimestamp + '\'' +
-                ", artist=" + artist.getName() +
-                ", category=" + category.getLabel() +
+                ", artist=" + artist +
+                ", category=" + category +
+                ", main_image='" + main_image + '\'' +
                 '}';
     }
 }

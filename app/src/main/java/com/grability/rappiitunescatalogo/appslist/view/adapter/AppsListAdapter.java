@@ -38,6 +38,26 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
         notifyDataSetChanged();
     }
 
+    public void filter(String name, int category) {
+        if (category > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                App item = list.get(i);
+                if (item.getCategory().getId() != category) {
+                    list.remove(item);
+                }
+            }
+        }
+        if (name.length() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                App item = list.get(i);
+                if (!item.getName().contains(name)) {
+                    list.remove(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public Viewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
@@ -54,6 +74,8 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
         holder.txtAppCategory.setText(currentApp.getCategory().getLabel());
         holder.txtAppResume.setText(currentApp.getSummary());
         holder.txtAppResume.setVisibility(View.GONE);
+
+        imageLoader.load(holder.imgIconImage, currentApp.getMain_image());
         // TODO: obtener imagenes y cargar la de la resolucion adecuada
 
         holder.setClickListener(currentApp, this.clickListener);

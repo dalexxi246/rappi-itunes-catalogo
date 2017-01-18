@@ -14,6 +14,8 @@ public interface AppsListPresenter {
 
     void getApps(int limit, int category_code);
 
+    void getApps(String name);
+
     void onEventMainThreat(AppslistEvent evt);
 
 }

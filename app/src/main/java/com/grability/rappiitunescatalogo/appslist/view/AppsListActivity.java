@@ -1,14 +1,24 @@
 package com.grability.rappiitunescatalogo.appslist.view;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.grability.rappiitunescatalogo.R;
 import com.grability.rappiitunescatalogo.appdetails.view.AppDetailsActivity;
@@ -25,6 +35,12 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     Toolbar appbar;
     @BindView(R.id.btn_search)
     FloatingActionButton btnSearch;
+    @BindView(R.id.txt_app_name_search)
+    EditText txtAppNameSearch;
+    @BindView(R.id.txtil_app_name_search)
+    TextInputLayout txtilAppNameSearch;
+    @BindView(R.id.container_animated_search)
+    RelativeLayout containerAnimatedSearch;
 
     FrameLayout containerList;
     FrameLayout containerDetails;
@@ -57,6 +73,28 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (containerAnimatedSearch.getVisibility() == View.VISIBLE) {
+            closeSearchByName();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!checkConnectivity()) {
+            onFragmentError("Modo sin conexion");
+        }
+    }
+
     private void setupContainers() {
         containerList = (FrameLayout) findViewById(R.id.container_list);
         containerDetails = (FrameLayout) findViewById(R.id.container_details);
@@ -66,15 +104,59 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         setSupportActionBar(appbar);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     @OnClick(R.id.btn_search)
     public void onClick() {
         if (appsListFragment != null) {
-            appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, "Mario");
+            if (containerAnimatedSearch.getVisibility() == View.VISIBLE) {
+                closeSearchByName();
+                String name = txtAppNameSearch.getText().toString();
+                if (name.length() > 0) {
+                    appbar.setTitle("Nombre: " + name);
+                    appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, name);
+                }
+            }
+            if (containerAnimatedSearch.getVisibility() == View.INVISIBLE) {
+                performSearchByName();
+            }
+        }
+    }
+
+    private void performSearchByName() {
+        if (containerAnimatedSearch.getVisibility() == View.INVISIBLE) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+                int cx = (containerAnimatedSearch.getLeft() + containerAnimatedSearch.getRight()) / 2;
+                int cy = (containerAnimatedSearch.getTop() + containerAnimatedSearch.getBottom()) / 2;
+                int finalRadius = Math.max(containerAnimatedSearch.getWidth(), containerAnimatedSearch.getHeight());
+
+                Animator anim = ViewAnimationUtils.createCircularReveal(containerAnimatedSearch, cx, cy, 0, finalRadius);
+                containerAnimatedSearch.setVisibility(View.VISIBLE);
+                anim.start();
+            } else {
+                containerAnimatedSearch.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void closeSearchByName() {
+        if (containerAnimatedSearch.getVisibility() == View.VISIBLE) {
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+
+                int cx = (containerAnimatedSearch.getLeft() + containerAnimatedSearch.getRight()) / 2;
+                int cy = (containerAnimatedSearch.getTop() + containerAnimatedSearch.getBottom()) / 2;
+                int initialRadius = containerAnimatedSearch.getWidth();
+
+                Animator anim = ViewAnimationUtils.createCircularReveal(containerAnimatedSearch, cx, cy, initialRadius, 0);
+                anim.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        containerAnimatedSearch.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+                anim.start();
+            }
         }
     }
 
@@ -83,7 +165,7 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         Snackbar message;
         message = Snackbar
                 .make(btnSearch, errorMsg, Snackbar.LENGTH_INDEFINITE);
-        if (android.os.Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             message.setActionTextColor(getResources().getColor(R.color.colorAccent, getTheme()));
         } else {
             message.setActionTextColor(getResources().getColor(R.color.colorAccent));
@@ -102,5 +184,18 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
             appDetailsFragment = AppDetailsFragment.newInstance("", "");
             fragmentManager.beginTransaction().replace(R.id.container_details, appDetailsFragment).commit();
         }
+    }
+
+    public boolean checkConnectivity() {
+        boolean enabled = true;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+
+        if ((info == null || !info.isConnected() || !info.isAvailable())) {
+            enabled = false;
+        }
+        return enabled;
     }
 }

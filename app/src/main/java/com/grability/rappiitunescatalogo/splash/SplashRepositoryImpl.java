@@ -98,6 +98,7 @@ public class SplashRepositoryImpl implements SplashRepository {
             appEntry.setSummary(e.getSummary().getLabel());
             appEntry.setTitle(e.getTitle().getLabel());
             appEntry.setWeb_link(e.getLink().getAttributes().getHref());
+            appEntry.setMain_image(e.getImImage().get(2).getLabel());
             db_Apps.add(appEntry);
 
             for (ImImage imImage : e.getImImage()) {

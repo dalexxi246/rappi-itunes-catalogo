@@ -2,6 +2,7 @@
     <string name="app_name">Rappi iTunes Catalogo</string>
     <string name="splash.message.welcome">Bienvenido al catalogo de iTunes, por favor espere mientras concluye la carga inicial.</string>
     <string name="splash.label.reload">REINTENTAR</string>
+    <string name="appslist.hint.search_hint">¿Que app deseas?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

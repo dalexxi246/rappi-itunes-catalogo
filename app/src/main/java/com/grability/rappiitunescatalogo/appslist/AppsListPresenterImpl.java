@@ -41,6 +41,14 @@ public class AppsListPresenterImpl implements AppsListPresenter {
     }
 
     @Override
+    public void getApps(String name) {
+        if (view != null) {
+            view.showProgressBar();
+        }
+        interactor.getApps(name);
+    }
+
+    @Override
     @Subscribe
     public void onEventMainThreat(AppslistEvent evt) {
         if (view != null) {

@@ -1,7 +1,10 @@
 package com.grability.rappiitunescatalogo.splash.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -45,7 +48,11 @@ public class SplashActivity extends AppCompatActivity implements SplashView, Vie
         setupInjection();
 
         presenter.onCreate();
-        refreshCatalog();
+        if (checkConnectivity()) {
+            refreshCatalog();
+        } else {
+            gotoAppListActivity();
+        }
     }
 
     private void setupInjection() {
@@ -93,14 +100,27 @@ public class SplashActivity extends AppCompatActivity implements SplashView, Vie
         message.show();
     }
 
-    private void gotoAppListActivity() {
-        startActivity(new Intent(this, AppsListActivity.class));
-    }
-
     @Override
     public void onClick(View view) {
         if (view.getId() == android.support.design.R.id.snackbar_action) {
             refreshCatalog();
         }
+    }
+
+    private void gotoAppListActivity() {
+        startActivity(new Intent(this, AppsListActivity.class));
+    }
+
+    public boolean checkConnectivity() {
+        boolean enabled = true;
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) this
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+
+        if ((info == null || !info.isConnected() || !info.isAvailable())) {
+            enabled = false;
+        }
+        return enabled;
     }
 }

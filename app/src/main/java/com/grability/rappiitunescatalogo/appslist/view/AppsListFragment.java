@@ -125,9 +125,18 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
 
     }
 
+    // TODO: 18/01/17 Definir como hacer el filtrado desde la pantalla principal, una vez haya datos en el adapter (o en el repo, con el array ya cargado)
+// TODO: 18/01/17 Pantalla de detalles
+// TODO: 18/01/17 Bloquear orientacion portrait en smartphone.
+// TODO: 18/01/17 NavDrawer Categorias
+// TODO: 18/01/17 Fragment y Activity Detalles
+// TODO: 18/01/17 Animaciones
     @Override
     public void searchCatalog(int category_code, String app_name) {
-
+        presenter.getApps(DEFAULT_LIMIT_APP_LIST, 0);
+        if (app_name.length() > 0 || category_code > 0) {
+            adapter.filter(app_name, category_code);
+        }
     }
 
     @Override
@@ -152,7 +161,6 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentError(String errorMsg);
-
         void onSelectedApp(App app);
     }
 }

@@ -14,7 +14,16 @@ public class AppslistInteractorImpl implements AppslistInteractor {
 
     @Override
     public void getApps(int limit, int category_code) {
-        repository.getSavedApps(limit, category_code);
+        repository.getSavedApps(limit, category_code, "");
     }
 
+    @Override
+    public void getApps(String name) {
+        repository.getSavedApps(20, 0, name);
+    }
+
+    @Override
+    public void getApps(int limit, int category_code, String name) {
+        repository.getSavedApps(limit, category_code, name);
+    }
 }

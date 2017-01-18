@@ -47,4 +47,9 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/activity_vertical_margin" />
 
+    <include
+        layout="@layout/layout_container_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </android.support.design.widget.CoordinatorLayout>
