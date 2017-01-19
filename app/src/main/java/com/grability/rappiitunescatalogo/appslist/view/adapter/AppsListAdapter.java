@@ -76,7 +76,6 @@ public class AppsListAdapter extends RecyclerView.Adapter<AppsListAdapter.Viewho
         holder.txtAppResume.setVisibility(View.GONE);
 
         imageLoader.load(holder.imgIconImage, currentApp.getMain_image());
-        // TODO: obtener imagenes y cargar la de la resolucion adecuada
 
         holder.setClickListener(currentApp, this.clickListener);
     }

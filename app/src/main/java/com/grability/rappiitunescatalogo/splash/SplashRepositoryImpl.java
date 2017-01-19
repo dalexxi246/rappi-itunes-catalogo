@@ -50,13 +50,13 @@ public class SplashRepositoryImpl implements SplashRepository {
                 if (r != null) {
                     updateAppsFromAPI(r);
                 } else {
-                    post(response.message(), AppslistEvent.UPDATE_EVENT);
+                    post(response.message(), AppslistEvent.UPDATE_APPLIST_EVENT);
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                post(t.getLocalizedMessage(), AppslistEvent.UPDATE_EVENT);
+                post(t.getLocalizedMessage(), AppslistEvent.UPDATE_APPLIST_EVENT);
             }
         });
     }
@@ -170,7 +170,7 @@ public class SplashRepositoryImpl implements SplashRepository {
                     @Override
                     public void onError(Transaction transaction, Throwable error) {
                         error.printStackTrace();
-                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_EVENT);
+                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_APPLIST_EVENT);
                     }
                 }).build();
 
@@ -185,7 +185,7 @@ public class SplashRepositoryImpl implements SplashRepository {
                     @Override
                     public void onError(Transaction transaction, Throwable error) {
                         error.printStackTrace();
-                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_EVENT);
+                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_APPLIST_EVENT);
                     }
                 }).build();
         Transaction t3 = database.beginTransactionAsync(appProcessModelTransaction)
@@ -199,7 +199,7 @@ public class SplashRepositoryImpl implements SplashRepository {
                     @Override
                     public void onError(Transaction transaction, Throwable error) {
                         error.printStackTrace();
-                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_EVENT);
+                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_APPLIST_EVENT);
                     }
                 }).build();
         Transaction t4 = database.beginTransactionAsync(imageProcessModelTransaction)
@@ -213,7 +213,7 @@ public class SplashRepositoryImpl implements SplashRepository {
                     @Override
                     public void onError(Transaction transaction, Throwable error) {
                         error.printStackTrace();
-                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_EVENT);
+                        post(error.getLocalizedMessage(), AppslistEvent.UPDATE_APPLIST_EVENT);
                     }
                 }).build();
 
@@ -231,7 +231,7 @@ public class SplashRepositoryImpl implements SplashRepository {
             if (update) count_updates++;
         }
         if (count_updates == updates.length) {
-            post(AppslistEvent.UPDATE_EVENT);
+            post(AppslistEvent.UPDATE_APPLIST_EVENT);
         }
     }
 
@@ -251,7 +251,7 @@ public class SplashRepositoryImpl implements SplashRepository {
 
     private void post(List<App> apps) {
         AppslistEvent event = new AppslistEvent();
-        event.setType(AppslistEvent.READ_EVENT);
+        event.setType(AppslistEvent.READ_APPLIST_EVENT);
         event.setApps(apps);
         eventBus.post(event);
     }

@@ -1,19 +1,18 @@
 package com.grability.rappiitunescatalogo.appslist.event;
 
-import com.grability.rappiitunescatalogo.model.db.tables.App;
+import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
 import java.util.List;
 
 /**
  * Created by wilmer on 15/01/17.
  */
-public class AppslistEvent {
+public class CategorieslistEvent {
 
-    public static final int UPDATE_APPLIST_EVENT = 373;
-    public static final int READ_APPLIST_EVENT = 192;
+    public static final int READ_EVENT = 641;
 
     int type;
-    List<App> apps;
+    List<Category> categories;
     String errorMsg;
 
     public int getType() {
@@ -24,12 +23,12 @@ public class AppslistEvent {
         this.type = type;
     }
 
-    public List<App> getApps() {
-        return apps;
+    public List<Category> getCategories() {
+        return categories;
     }
 
-    public void setApps(List<App> apps) {
-        this.apps = apps;
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public String getErrorMsg() {

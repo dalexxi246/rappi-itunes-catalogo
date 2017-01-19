@@ -45,7 +45,7 @@ public class SplashPresenterImpl implements SplashPresenter {
     public void onEventMainThreat(AppslistEvent evt) {
         if (view != null) {
             switch (evt.getType()) {
-                case AppslistEvent.UPDATE_EVENT:
+                case AppslistEvent.UPDATE_APPLIST_EVENT:
                     if (evt.getErrorMsg() == null) {
                         view.hideProgressBar();
                         view.onCatalogUpdated();

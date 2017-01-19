@@ -6,5 +6,7 @@ package com.grability.rappiitunescatalogo.appslist;
 
 public interface AppslistRepository {
 
-    void getSavedApps(int limit, int category_code, String name);
+    void getSavedApps(int category_code, String name);
+
+    void getSavedCategories();
 }

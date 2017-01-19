@@ -9,27 +9,34 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.grability.rappiitunescatalogo.R;
 import com.grability.rappiitunescatalogo.appdetails.view.AppDetailsActivity;
 import com.grability.rappiitunescatalogo.appdetails.view.AppDetailsFragment;
 import com.grability.rappiitunescatalogo.model.db.tables.App;
+import com.grability.rappiitunescatalogo.model.db.tables.Category;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AppsListActivity extends AppCompatActivity implements AppsListFragment.OnFragmentInteractionListener {
+public class AppsListActivity extends AppCompatActivity implements AppsListFragment.OnFragmentInteractionListener, View.OnClickListener {
 
     @BindView(R.id.appbar)
     Toolbar appbar;
@@ -41,6 +48,10 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     TextInputLayout txtilAppNameSearch;
     @BindView(R.id.container_animated_search)
     RelativeLayout containerAnimatedSearch;
+    @BindView(R.id.btn_perform_search)
+    ImageButton btnPerformSearch;
+    @BindView(R.id.navview_categories)
+    NavigationView navviewCategories;
 
     FrameLayout containerList;
     FrameLayout containerDetails;
@@ -48,8 +59,9 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     AppsListFragment appsListFragment;
     AppDetailsFragment appDetailsFragment;
     FragmentManager fragmentManager;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
 
-    // TODO: Busqueda por nombre (Usando CircleReveal)
     // TODO; Busqueda por categoria (Usando NavigationView)
 
     @Override
@@ -59,6 +71,7 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         ButterKnife.bind(this);
         setupContainers();
         setupAppBar();
+        containerAnimatedSearch.setVisibility(View.INVISIBLE);
 
         fragmentManager = getSupportFragmentManager();
         if (containerDetails == null) {
@@ -102,28 +115,38 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
 
     private void setupAppBar() {
         setSupportActionBar(appbar);
+        appbar.setTitle(R.string.appslist_label_all_aps);
+        appbar.setNavigationOnClickListener(this);
     }
 
     @OnClick(R.id.btn_search)
-    public void onClick() {
+    public void onClickSearch() {
         if (appsListFragment != null) {
             if (containerAnimatedSearch.getVisibility() == View.VISIBLE) {
-                closeSearchByName();
-                String name = txtAppNameSearch.getText().toString();
-                if (name.length() > 0) {
-                    appbar.setTitle("Nombre: " + name);
-                    appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, name);
-                }
+                performSearchByAppName();
             }
             if (containerAnimatedSearch.getVisibility() == View.INVISIBLE) {
-                performSearchByName();
+                showSearchByNameInput();
             }
         }
     }
 
-    private void performSearchByName() {
+    private void performSearchByAppName() {
+        closeSearchByName();
+        String name = txtAppNameSearch.getText().toString();
+        if (name.length() > 0) {
+            appbar.setTitle("Nombre: " + name);
+            appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, name);
+        } else {
+            appbar.setTitle(R.string.appslist_label_all_aps);
+            appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, "");
+        }
+    }
+
+    private void showSearchByNameInput() {
         if (containerAnimatedSearch.getVisibility() == View.INVISIBLE) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            btnSearch.hide();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
                 int cx = (containerAnimatedSearch.getLeft() + containerAnimatedSearch.getRight()) / 2;
                 int cy = (containerAnimatedSearch.getTop() + containerAnimatedSearch.getBottom()) / 2;
@@ -140,8 +163,8 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
 
     private void closeSearchByName() {
         if (containerAnimatedSearch.getVisibility() == View.VISIBLE) {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-
+            btnSearch.show();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 int cx = (containerAnimatedSearch.getLeft() + containerAnimatedSearch.getRight()) / 2;
                 int cy = (containerAnimatedSearch.getTop() + containerAnimatedSearch.getBottom()) / 2;
                 int initialRadius = containerAnimatedSearch.getWidth();
@@ -156,6 +179,8 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
                 });
 
                 anim.start();
+            } else {
+                containerAnimatedSearch.setVisibility(View.INVISIBLE);
             }
         }
     }
@@ -186,6 +211,11 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         }
     }
 
+    @Override
+    public void onCategoriesReaded(List<Category> categories) {
+        // TODO: AQUI !!!!! navviewCategories.getMenu().add()
+    }
+
     public boolean checkConnectivity() {
         boolean enabled = true;
 
@@ -197,5 +227,19 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
             enabled = false;
         }
         return enabled;
+    }
+
+    @OnClick(R.id.btn_perform_search)
+    public void onClickPerformSearch() {
+        performSearchByAppName();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                break;
+        }
     }
 }

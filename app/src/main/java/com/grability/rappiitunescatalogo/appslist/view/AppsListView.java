@@ -1,6 +1,7 @@
 package com.grability.rappiitunescatalogo.appslist.view;
 
 import com.grability.rappiitunescatalogo.model.db.tables.App;
+import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
 import java.util.List;
 
@@ -17,6 +18,10 @@ public interface AppsListView {
     void searchCatalog(int category_code, String app_name);
 
     void setAppList(List<App> appList);
+
+    void getCategories();
+
+    void onCategoriesReaded(List<Category> categories);
 
     void onError(String errorMsg);
 

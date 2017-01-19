@@ -15,6 +15,7 @@ import com.grability.rappiitunescatalogo.appslist.AppsListPresenter;
 import com.grability.rappiitunescatalogo.appslist.view.adapter.AppsListAdapter;
 import com.grability.rappiitunescatalogo.appslist.view.adapter.OnAppListItemClickListener;
 import com.grability.rappiitunescatalogo.model.db.tables.App;
+import com.grability.rappiitunescatalogo.model.db.tables.Category;
 
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
         }
         setupInjection();
         presenter.onCreate();
-        presenter.getApps(pLimit, pCategory);
+        presenter.getApps(pCategory, "");
     }
 
     private void setupInjection() {
@@ -126,6 +127,7 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
     }
 
     // TODO: 18/01/17 Definir como hacer el filtrado desde la pantalla principal, una vez haya datos en el adapter (o en el repo, con el array ya cargado)
+    // TODO: 18/01/17 En tablets se invoca el CircleReveal, pero no aparece el boton para realizar la busqueda
 // TODO: 18/01/17 Pantalla de detalles
 // TODO: 18/01/17 Bloquear orientacion portrait en smartphone.
 // TODO: 18/01/17 NavDrawer Categorias
@@ -133,15 +135,22 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
 // TODO: 18/01/17 Animaciones
     @Override
     public void searchCatalog(int category_code, String app_name) {
-        presenter.getApps(DEFAULT_LIMIT_APP_LIST, 0);
-        if (app_name.length() > 0 || category_code > 0) {
-            adapter.filter(app_name, category_code);
-        }
+        presenter.getApps(category_code, app_name);
     }
 
     @Override
     public void setAppList(List<App> appList) {
         adapter.setApps(appList);
+    }
+
+    @Override
+    public void getCategories() {
+
+    }
+
+    @Override
+    public void onCategoriesReaded(List<Category> categories) {
+
     }
 
     @Override
@@ -159,8 +168,9 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentError(String errorMsg);
         void onSelectedApp(App app);
+
+        void onCategoriesReaded(List<Category> categories);
     }
 }

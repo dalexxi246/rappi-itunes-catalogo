@@ -1,6 +1,7 @@
 package com.grability.rappiitunescatalogo.appslist;
 
 import com.grability.rappiitunescatalogo.appslist.event.AppslistEvent;
+import com.grability.rappiitunescatalogo.appslist.event.CategorieslistEvent;
 import com.grability.rappiitunescatalogo.appslist.view.AppsListView;
 import com.grability.rappiitunescatalogo.libs.base.EventBus;
 
@@ -33,19 +34,16 @@ public class AppsListPresenterImpl implements AppsListPresenter {
     }
 
     @Override
-    public void getApps(int limit, int category_code) {
+    public void getApps(int category_code, String name) {
         if (view != null) {
             view.showProgressBar();
         }
-        interactor.getApps(limit, category_code);
+        interactor.getApps(category_code, name);
     }
 
     @Override
-    public void getApps(String name) {
-        if (view != null) {
-            view.showProgressBar();
-        }
-        interactor.getApps(name);
+    public void getCategories() {
+        interactor.getCategories();
     }
 
     @Override
@@ -53,7 +51,7 @@ public class AppsListPresenterImpl implements AppsListPresenter {
     public void onEventMainThreat(AppslistEvent evt) {
         if (view != null) {
             switch (evt.getType()) {
-                case AppslistEvent.READ_EVENT:
+                case AppslistEvent.READ_APPLIST_EVENT:
                     if (evt.getErrorMsg() == null) {
                         view.hideProgressBar();
                         view.setAppList(evt.getApps());
@@ -61,6 +59,18 @@ public class AppsListPresenterImpl implements AppsListPresenter {
                         view.onError(evt.getErrorMsg());
                     }
                     break;
+            }
+        }
+    }
+
+    @Override
+    public void onEventMainThreat(CategorieslistEvent evt) {
+        if (view != null) {
+            switch (evt.getType()) {
+                case CategorieslistEvent.READ_EVENT:
+                    if (evt.getErrorMsg() == null) {
+
+                    }
             }
         }
     }
