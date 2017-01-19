@@ -4,8 +4,8 @@ package com.grability.rappiitunescatalogo.appdetails;
  * Created by wilmer on 15/01/17.
  */
 
-public interface AppDetailsRepository {
+public interface AppDetailsInteractor {
 
-    void getAppInfo(int app_id);
+    void getApp(int app_id);
 
 }

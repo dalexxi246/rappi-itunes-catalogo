@@ -1,13 +1,147 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.grability.rappiitunescatalogo.appdetails.view.AppDetailsActivity">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_header"
+            android:layout_width="match_parent"
+            android:layout_height="136dp"
+            android:background="@color/colorPrimaryDark" />
+
+        <ImageView
+            android:id="@+id/img_icon_image"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_margin="32dp"
+            android:src="@mipmap/itunes_icon" />
+
+        <TextView
+            android:id="@+id/txt_app_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@id/img_icon_image"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@+id/img_icon_image"
+            android:text="Games"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/txt_app_name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="40dp"
+            android:layout_toEndOf="@+id/img_icon_image"
+            android:layout_toRightOf="@+id/img_icon_image"
+            android:ellipsize="marquee"
+            android:maxLines="2"
+            android:text="Select an App to show more details."
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/txt_app_resume"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_header"
+            android:layout_margin="@dimen/activity_vertical_margin"
+            android:ellipsize="end"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/img_app_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_app_resume"
+            android:layout_marginLeft="32dp"
+            android:layout_marginStart="32dp"
+            android:src="@drawable/ic_attach_money" />
+
+        <ImageView
+            android:id="@+id/img_app_web_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/img_app_currency"
+            android:layout_alignStart="@id/img_app_currency"
+            android:layout_below="@id/img_app_currency"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_language" />
+
+        <ImageView
+            android:id="@+id/img_app_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/img_app_currency"
+            android:layout_alignStart="@id/img_app_currency"
+            android:layout_below="@id/img_app_web_link"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_access_time" />
+
+        <ImageView
+            android:id="@+id/img_app_rights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/img_app_currency"
+            android:layout_alignStart="@id/img_app_currency"
+            android:layout_below="@id/img_app_release_date"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:src="@drawable/ic_copyright" />
+
+        <TextView
+            android:id="@+id/txt_app_currency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_app_currency"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_toEndOf="@id/img_app_currency"
+            android:layout_toRightOf="@id/img_app_currency"
+            android:ellipsize="marquee"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/txt_app_rights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_app_rights"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_toEndOf="@id/img_app_rights"
+            android:layout_toRightOf="@id/img_app_rights"
+            android:ellipsize="marquee"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/txt_app_web_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_app_web_link"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_toEndOf="@id/img_app_web_link"
+            android:layout_toRightOf="@id/img_app_web_link"
+            android:ellipsize="marquee"
+            android:maxLines="1" />
+
+        <TextView
+            android:id="@+id/txt_app_release_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/img_app_release_date"
+            android:layout_marginLeft="@dimen/activity_vertical_margin"
+            android:layout_toEndOf="@id/img_app_release_date"
+            android:layout_toRightOf="@id/img_app_release_date"
+            android:ellipsize="marquee"
+            android:maxLines="1" />
+    </RelativeLayout>
+
+</ScrollView>

@@ -73,6 +73,7 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
         setupInjection();
         presenter.onCreate();
         presenter.getApps(pCategory, "");
+        presenter.getCategories();
     }
 
     private void setupInjection() {
@@ -145,12 +146,14 @@ public class AppsListFragment extends Fragment implements AppsListView, OnAppLis
 
     @Override
     public void getCategories() {
-
+        presenter.getCategories();
     }
 
     @Override
     public void onCategoriesReaded(List<Category> categories) {
-
+        if (mListener != null) {
+            mListener.onCategoriesReaded(categories);
+        }
     }
 
     @Override

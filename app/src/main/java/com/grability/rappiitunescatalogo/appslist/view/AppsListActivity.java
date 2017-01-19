@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -17,6 +18,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.widget.EditText;
@@ -36,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AppsListActivity extends AppCompatActivity implements AppsListFragment.OnFragmentInteractionListener, View.OnClickListener {
+public class AppsListActivity extends AppCompatActivity implements AppsListFragment.OnFragmentInteractionListener {
 
     @BindView(R.id.appbar)
     Toolbar appbar;
@@ -78,12 +80,11 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
             appsListFragment = AppsListFragment.newInstance(AppsListFragment.SCREEN_SIZE_PHONE, AppsListFragment.DEFAULT_LIMIT_APP_LIST, AppsListFragment.FILTER_NO_CATEGORY);
         } else {
             appsListFragment = AppsListFragment.newInstance(AppsListFragment.SCREEN_SIZE_TABLET, AppsListFragment.DEFAULT_LIMIT_APP_LIST, AppsListFragment.FILTER_NO_CATEGORY);
-            appDetailsFragment = AppDetailsFragment.newInstance("", "");
+            appDetailsFragment = AppDetailsFragment.newInstance(0);
             fragmentManager.beginTransaction().replace(R.id.container_details, appDetailsFragment).commit();
         }
         appsListFragment.setOnFragmentInteractionListener(this);
         fragmentManager.beginTransaction().replace(R.id.container_list, appsListFragment).commit();
-
     }
 
     @Override
@@ -116,7 +117,22 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     private void setupAppBar() {
         setSupportActionBar(appbar);
         appbar.setTitle(R.string.appslist_label_all_aps);
-        appbar.setNavigationOnClickListener(this);
+
+        appbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawerLayout.openDrawer(GravityCompat.START);
+            }
+        });
+        navviewCategories.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                appsListFragment.searchCatalog(item.getItemId(), "");
+                appbar.setTitle(String.format(getResources().getString(R.string.appslist_label_appbar_search_category), item.getTitle()));
+                drawerLayout.closeDrawers();
+                return false;
+            }
+        });
     }
 
     @OnClick(R.id.btn_search)
@@ -135,7 +151,7 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         closeSearchByName();
         String name = txtAppNameSearch.getText().toString();
         if (name.length() > 0) {
-            appbar.setTitle("Nombre: " + name);
+            appbar.setTitle(String.format(getResources().getString(R.string.appslist_label_appbar_search_name), name));
             appsListFragment.searchCatalog(AppsListFragment.FILTER_NO_CATEGORY, name);
         } else {
             appbar.setTitle(R.string.appslist_label_all_aps);
@@ -202,18 +218,26 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
     public void onSelectedApp(App app) {
         if (containerDetails == null) {
             Intent i = new Intent(this, AppDetailsActivity.class);
+            i.putExtra(AppDetailsFragment.ARG_APP_ID, app.getId());
             // TODO: Enviar id de App en el bundle para que el fragment la cargue
             startActivity(i);
         } else {
             // TODO: Enviar id de App como parametro para que el fragment la cargue
-            appDetailsFragment = AppDetailsFragment.newInstance("", "");
+            appDetailsFragment = AppDetailsFragment.newInstance(app.getId());
             fragmentManager.beginTransaction().replace(R.id.container_details, appDetailsFragment).commit();
         }
     }
 
     @Override
     public void onCategoriesReaded(List<Category> categories) {
-        // TODO: AQUI !!!!! navviewCategories.getMenu().add()
+        if (categories.size() > 0) {
+            navviewCategories.getMenu().clear();
+            navviewCategories.getMenu().add(0, 0, 0, R.string.appslist_label_all_categories);
+            for (int i = 0; i < categories.size(); i++) {
+                Category c = categories.get(i);
+                navviewCategories.getMenu().add(0, c.getId(), 0, c.getLabel());
+            }
+        }
     }
 
     public boolean checkConnectivity() {
@@ -234,12 +258,4 @@ public class AppsListActivity extends AppCompatActivity implements AppsListFragm
         performSearchByAppName();
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                break;
-        }
-    }
 }

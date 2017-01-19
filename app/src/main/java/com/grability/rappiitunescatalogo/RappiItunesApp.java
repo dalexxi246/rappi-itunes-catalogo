@@ -4,6 +4,10 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.grability.rappiitunescatalogo.appdetails.di.AppDetailsComponent;
+import com.grability.rappiitunescatalogo.appdetails.di.AppDetailsModule;
+import com.grability.rappiitunescatalogo.appdetails.di.DaggerAppDetailsComponent;
+import com.grability.rappiitunescatalogo.appdetails.view.AppDetailsView;
 import com.grability.rappiitunescatalogo.appslist.di.AppsListComponent;
 import com.grability.rappiitunescatalogo.appslist.di.AppsListModule;
 import com.grability.rappiitunescatalogo.appslist.di.DaggerAppsListComponent;
@@ -73,6 +77,15 @@ public class RappiItunesApp extends Application {
                 .libsModule(libsModule)
                 .rappiItunesAppModule(appModule)
                 .appsListModule(new AppsListModule(appListView, onAppListItemClickListener))
+                .build();
+    }
+
+    public AppDetailsComponent getAppDetailsComponent(AppDetailsView view) {
+        return DaggerAppDetailsComponent
+                .builder()
+                .libsModule(libsModule)
+                .rappiItunesAppModule(appModule)
+                .appDetailsModule(new AppDetailsModule(view))
                 .build();
     }
 }

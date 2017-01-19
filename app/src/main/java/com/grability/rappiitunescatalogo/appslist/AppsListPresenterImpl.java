@@ -64,13 +64,15 @@ public class AppsListPresenterImpl implements AppsListPresenter {
     }
 
     @Override
+    @Subscribe
     public void onEventMainThreat(CategorieslistEvent evt) {
         if (view != null) {
             switch (evt.getType()) {
                 case CategorieslistEvent.READ_EVENT:
                     if (evt.getErrorMsg() == null) {
-
+                        view.onCategoriesReaded(evt.getCategories());
                     }
+                    break;
             }
         }
     }
